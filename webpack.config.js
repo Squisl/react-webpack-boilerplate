@@ -1,6 +1,12 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "index_bundle.js",
+    publicPath: "/"
+  },
   module: {
     rules: [
       {
@@ -30,13 +36,28 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.(jpe?g|gif|png|svg)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 10000
+            }
+          }
+        ]
       }
     ]
+  },
+  devServer: {
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
-      filename: "./index.html"
+      filename: "./index.html",
+      favicon: "./src/assets/images/favicon.png"
     })
   ]
 };
